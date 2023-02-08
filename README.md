@@ -1,4 +1,4 @@
-# diffusion-papers
+# Diffusion papers
 Contains the important diffusion papers and their summaries
 
 ## Papers to read
@@ -15,6 +15,7 @@ Contains the important diffusion papers and their summaries
 - [ ] [Muse: Text-To-Image Generation via Masked Generative Transformers](https://arxiv.org/abs/2301.00704)
 - [ ] [InstructPix2Pix: Learning to Follow Image Editing Instructions](https://arxiv.org/abs/2211.09800)
 - [ ] [Cold Diffusion: Inverting Arbitrary Image Transforms Without Noise](https://arxiv.org/abs/2208.09392)
+- [ ] [eDiff-I: Text-to-Image Diffusion Models with an Ensemble of Expert Denoisers](https://arxiv.org/abs/2211.01324)
 
 
 ## Image to Image translation using conditional diffusion models
