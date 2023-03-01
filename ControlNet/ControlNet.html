@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Adding Conditional Control to Text-to-Image Diffusion Models</title>
+        <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+/* From extension ms-toolsai.jupyter */
+/* These classnames are inherited from bootstrap, but are present in most notebook renderers */
+
+.alert {
+    width: auto;
+    padding: 1em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.alert > *:last-child {
+    margin-bottom: 0;
+}
+#preview > .alert:last-child {
+    /* Prevent this being set to zero by the default notebook stylesheet */
+    padding-bottom: 1em;
+}
+
+.alert-success {
+    /* Note there is no suitable color available, so we just copy "info" */
+    background-color: var(--theme-info-background);
+    color: var(--theme-info-foreground);
+}
+.alert-info {
+    background-color: var(--theme-info-background);
+    color: var(--theme-info-foreground);
+}
+.alert-warning {
+    background-color: var(--theme-warning-background);
+    color: var(--theme-warning-foreground);
+}
+.alert-danger {
+    background-color: var(--theme-error-background);
+    color: var(--theme-error-foreground);
+}
+
+</style>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+        
+    </head>
+    <body class="vscode-body vscode-light">
+        <h1 id="adding-conditional-control-to-text-to-image-diffusion-models">Adding Conditional Control to Text-to-Image Diffusion Models</h1>
+<ul>
+<li>Paper: <a href="https://arxiv.org/abs/2302.05543">https://arxiv.org/abs/2302.05543</a></li>
+<li>Github repo: <a href="https://github.com/lllyasviel/ControlNet">https://github.com/lllyasviel/ControlNet</a></li>
+</ul>
+<p><em><strong>Canny Edges as the condition</strong></em></p>
+<p>
+<img src="file:////Users/aayushgarg/diffusion-papers/ControlNet/images/p1.png"
+alt="" style="align="center" width="800px"/>
+</p>
+<p><em><strong>Depth maps as the condition</strong></em></p>
+<p>
+<img src="file:////Users/aayushgarg/diffusion-papers/ControlNet/images/p15.png"
+alt="" style="align="center" width="800px"/>
+</p>
+<blockquote>
+<p>In the examples, you don't require fancy prompts. May be its the combination of condition and training data used for training. Maybe simple prompts used in training?</p>
+</blockquote>
+<h2 id="table-of-contents"><strong>Table of contents</strong></h2>
+<ul>
+<li><a href="#adding-conditional-control-to-text-to-image-diffusion-models">Adding Conditional Control to Text-to-Image Diffusion Models</a>
+<ul>
+<li><a href="#table-of-contents"><strong>Table of contents</strong></a></li>
+<li><a href="#summary"><strong>Summary</strong></a></li>
+<li><a href="#why-do-we-need-solutions-like-controlnet"><strong>Why do we need solutions like ControlNet?</strong></a></li>
+<li><a href="#related-work"><strong>Related work</strong></a></li>
+<li><a href="#method">Method</a>
+<ul>
+<li><a href="#controlnet"><strong>ControlNet</strong></a></li>
+<li><a href="#controlnet-in-image-diffusion-model"><strong>ControlNet in image diffusion model</strong></a></li>
+</ul>
+</li>
+<li><a href="#training"><strong>Training</strong></a>
+<ul>
+<li><a href="#type-of-training"><strong>Type of training</strong></a>
+<ul>
+<li><a href="#default-mode"><strong>Default mode</strong></a></li>
+</ul>
+</li>
+<li><a href="#small-scale-training"><strong>Small-scale training</strong></a></li>
+<li><a href="#large-scale-training-clarify"><strong>Large-scale training (<em>Clarify?</em>)</strong></a></li>
+</ul>
+</li>
+<li><a href="#experiments"><strong>Experiments</strong></a>
+<ul>
+<li><a href="#experiment-settings"><strong>Experiment settings</strong></a></li>
+</ul>
+</li>
+<li><a href="#examples">Examples</a>
+<ul>
+<li><a href="#different-input-conditions"><strong>Different input conditions</strong></a></li>
+<li><a href="#simple-examples-with-high-modifications-allowed"><strong>Simple examples with high-modifications allowed</strong></a></li>
+<li><a href="#coarse-control"><strong>Coarse control</strong></a></li>
+<li><a href="#comparison-depth-maps"><strong>Comparison depth-maps</strong></a></li>
+<li><a href="#limitations"><strong>Limitations</strong></a></li>
+<li><a href="#stable-diffusion-variants-as-base-model"><strong>Stable diffusion variants as base model</strong></a></li>
+<li><a href="#image-editing"><strong>Image editing</strong></a></li>
+<li><a href="#training-data-size"><strong>Training data size</strong></a></li>
+</ul>
+</li>
+<li><a href="#sudden-convergence-phenomenon"><strong>Sudden Convergence Phenomenon</strong></a></li>
+</ul>
+</li>
+</ul>
+<h2 id="summary"><strong>Summary</strong></h2>
+<ul>
+<li>
+<p><em><strong>ControlNet</strong></em>, allows <em><strong>additional control</strong></em> for the pre-trained large diffusion models, such as Stable diffusion, by providing the facility of input <strong>visual</strong> conditions such as edge maps, segment masks, depth masks, etc.</p>
+</li>
+<li>
+<p>They learns task-specific conditions in an end-to-end way</p>
+</li>
+<li>
+<p>The training is as fast as fine-tuning a diffusion model, and for small dataset (&lt;50k), it can be trained to produce robust results even on desktop-grade personal GPUs.</p>
+</li>
+<li>
+<p>Alternatively, if powerful computation clusters are available, the model can scale to large amounts (millions to billions) of data.</p>
+</li>
+</ul>
+<h2 id="why-do-we-need-solutions-like-controlnet"><strong>Why do we need solutions like ControlNet?</strong></h2>
+<ol>
+<li>
+<p>Firstly, many a times promps-level control is not able to capture and satisfy the user needs? We need to have a control that provides object-level or scene-level understanding to image generation problem, especially for specific image processing tasks.</p>
+</li>
+<li>
+<p>Secondly, usually, for specific tasks, such as depth-to-image, pose-to-human, etc, we don't have data in billions! It is usually in thousands or at max in a single-digit million order. Therefore, we require robust neural network training method to avoid overfitting and to preserve generalization ability when the large models are fine-tuned for specific problems.</p>
+</li>
+<li>
+<p>Thirdly, large computational resources are not always available for specific tasks. Therefore, we require fast training methods for optimizing large pre-trained models within an acceptable amount of time, memory and budget.</p>
+</li>
+</ol>
+<h2 id="related-work"><strong>Related work</strong></h2>
+<ul>
+<li>To do</li>
+</ul>
+<h2 id="method">Method</h2>
+<h3 id="controlnet"><strong>ControlNet</strong></h3>
+<ol>
+<li>
+<p>ControlNet is an end-to-end neural network architecture that controls large image diffusion models (like Stable Diffusion) to learn task-specific input conditions.</p>
+</li>
+<li>
+<p>Using 2D feature as an example, given a feature map <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><msup><mi mathvariant="double-struck">R</mi><mrow><mi>h</mi><mo>×</mo><mi>w</mi><mo>×</mo><mi>c</mi></mrow></msup></mrow><annotation encoding="application/x-tex">x \in \mathbb{R}^{h \times w \times c}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathbb">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">h</span><span class="mbin mtight">×</span><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span><span class="mbin mtight">×</span><span class="mord mathnormal mtight">c</span></span></span></span></span></span></span></span></span></span></span></span>, a neural network block <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false">(</mo><mo separator="true">⋅</mo><mo separator="true">;</mo><mi>θ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">F (·; \theta)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mpunct">⋅;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span></span></span></span> with a set of parameters <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span> transforms <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> into another feature map <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span>.</p>
+</li>
+</ol>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>y</mi><mo>=</mo><mi>F</mi><mo stretchy="false">(</mo><mi mathvariant="bold">x</mi><mo separator="true">;</mo><mi>θ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">y = F (\mathbf{x}; \theta)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord mathbf">x</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span></span></span></span></span></p>
+<blockquote>
+<p>&quot;network block&quot; refers to a set of neural layers that are put together as a frequently used unit to build neural networks, e.g., “resnet” block, “conv-bn-relu” block, multi-head attention block, transformer block, etc.</p>
+</blockquote>
+<ol start="3">
+<li>The ControlNet clones the weights of a large diffusion model into a &quot;trainable copy&quot; (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">\theta_c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) and a &quot;locked copy&quot; (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span>). The copied <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">\theta_c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> is trained with an external condition vector <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi></mrow><annotation encoding="application/x-tex">c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span>. <em><strong>The locked copy preserves the network capability learned from billions of images, while the trainable copy is trained on task-specific datasets to learn the conditional control.</strong></em></li>
+</ol>
+<blockquote>
+<p>The motivation of making such copies rather than directly training the original weights is to avoid overfitting when dataset is small and to preserve the production-ready quality of large models learned from billions of images.</p>
+</blockquote>
+<blockquote>
+<p>Since the production-ready weights are preserved, the training is robust at datasets of different scale.</p>
+</blockquote>
+<ol start="4">
+<li>The trainable and locked neural network blocks are connected with an unique type of convolution layer called &quot;zero convolution&quot;, i.e., <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>×</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">1 \times 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> convolution layer with both weight and bias initialized with zeros. The zero convolution operation are denoted as <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">Z</mi><mo stretchy="false">(</mo><mo separator="true">⋅</mo><mo separator="true">;</mo><mo separator="true">⋅</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{Z}(·;·)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathcal" style="margin-right:0.07944em;">Z</span><span class="mopen">(</span><span class="mpunct">⋅;⋅</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mclose">)</span></span></span></span> and use two instances of parameters {<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>z</mi><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\theta_{z1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>z</mi><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\theta_{z2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> } to compose the ControlNet structure with:</li>
+</ol>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>y</mi><mo>=</mo><mi>F</mi><mo stretchy="false">(</mo><mi mathvariant="bold">x</mi><mo separator="true">;</mo><mi>θ</mi><mo stretchy="false">)</mo><mo>+</mo><mi mathvariant="script">Z</mi><mo stretchy="false">(</mo><mi>F</mi><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mi mathvariant="script">Z</mi><mo stretchy="false">(</mo><mi>c</mi><mo separator="true">;</mo><msub><mi>θ</mi><mrow><mi>z</mi><mn>2</mn></mrow></msub><mo stretchy="false">)</mo><mo separator="true">;</mo><msub><mi>θ</mi><mi>c</mi></msub><mo stretchy="false">)</mo><mo separator="true">;</mo><msub><mi>θ</mi><mrow><mi>z</mi><mn>2</mn></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">y = F (\mathbf{x}; \theta) + \mathcal{Z}(F(x + \mathcal{Z}(c;\theta_{z2}); \theta_c);\theta_{z2})
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord mathbf">x</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathcal" style="margin-right:0.07944em;">Z</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathcal" style="margin-right:0.07944em;">Z</span><span class="mopen">(</span><span class="mord mathnormal">c</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p>
+<img src="file:////Users/aayushgarg/diffusion-papers/ControlNet/images/controlnet_skeleton.png"
+alt="" style="align="center" width="800px"/>
+</p>
+<blockquote>
+<p>In zero convolution, weights progressively grow from zeros to optimized parameters in a learned manner.</p>
+</blockquote>
+<blockquote>
+<p>Since the zero convolution does not add new noise to deep features, the training is as fast as fine tuning a diffusion model, compared to training new layers from scratch.</p>
+</blockquote>
+<blockquote>
+<p>As long as the feature (image) is non-zero, the weights of the network will be optimized into non-zero matrix in the first gradient descent iteration. Notably, in this case, the feature term is input data or condition vectors sampled from datasets, which naturally ensures non-zero features.</p>
+</blockquote>
+<h3 id="controlnet-in-image-diffusion-model"><strong>ControlNet in image diffusion model</strong></h3>
+<ol>
+<li>Stable Diffusion is used as an example to introduce the method to use ControlNet to control a large diffusion model with task-specific conditions.</li>
+<li>Stable Diffusion is essentially an U-net with an encoder, a middle block, and a skip-connected decoder. Both the encoder and decoder have <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>12</mn></mrow><annotation encoding="application/x-tex">12</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">12</span></span></span></span> blocks, and the full model has <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>25</mn></mrow><annotation encoding="application/x-tex">25</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">25</span></span></span></span> blocks (including the middle block). In those blocks, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn></mrow><annotation encoding="application/x-tex">8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">8</span></span></span></span> blocks are down-sampling or up-sampling convolution layers, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>17</mn></mrow><annotation encoding="application/x-tex">17</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">17</span></span></span></span> blocks are main blocks that each contains four resnet layers and two Vision Transformers (ViTs). Each Vit contains several cross-attention and/or self-attention mechanisms.</li>
+</ol>
+<p>
+<img src="file:////Users/aayushgarg/diffusion-papers/ControlNet/images/controlnet_sd.png"
+alt="" style="align="center" width="800px"/>
+</p>
+<ol start="3">
+<li>The texts are encoded by OpenAI CLIP, and diffusion time steps are encoded by positional encoding.</li>
+<li>Stable Diffusion uses a pre-processing method similar to VQ-GAN to convert the entire dataset of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>512</mn><mo>×</mo><mn>512</mn></mrow><annotation encoding="application/x-tex">512 × 512</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">512</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">512</span></span></span></span> images into smaller <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mo>×</mo><mn>64</mn></mrow><annotation encoding="application/x-tex">64 × 64</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">64</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">64</span></span></span></span> “latent images” for stabilized training.</li>
+<li>This requires ControlNets to convert image-based conditions to <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mo>×</mo><mn>64</mn></mrow><annotation encoding="application/x-tex">64 × 64</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">64</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">64</span></span></span></span> feature space to match the convolution size. Here, a tiny network <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo stretchy="false">(</mo><mo separator="true">⋅</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">E(·)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mopen">(</span><span class="mpunct">⋅</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mclose">)</span></span></span></span> of four convolution layers with <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mo>×</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">4 × 4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span> kernels and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2 × 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> strides (activated by ReLU, channels are 16, 32, 64, 128, initialized with Gaussian weights, trained jointly with the full model) to encode image-space conditions of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>512</mn><mo>×</mo><mn>512</mn></mrow><annotation encoding="application/x-tex">512 \times 512</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">512</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">512</span></span></span></span> into feature maps of <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mo>×</mo><mn>64</mn></mrow><annotation encoding="application/x-tex">64 × 64</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">64</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">64</span></span></span></span>.</li>
+<li>Specifically, ControlNet creates the trainable copy of the <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>12</mn></mrow><annotation encoding="application/x-tex">12</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">12</span></span></span></span> encoding blocks and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> middle block of Stable Diffusion. The <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>12</mn></mrow><annotation encoding="application/x-tex">12</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">12</span></span></span></span> blocks are in <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn></mrow><annotation encoding="application/x-tex">4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span> resolutions (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mo>×</mo><mn>64</mn></mrow><annotation encoding="application/x-tex">64 × 64</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">64</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">64</span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>32</mn><mo>×</mo><mn>32</mn></mrow><annotation encoding="application/x-tex">32 × 32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32</span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>16</mn><mo>×</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">16 × 16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">16</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn><mo>×</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">8 × 8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">8</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">8</span></span></span></span>) with each having 3 blocks. The outputs are added to the <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>12</mn></mrow><annotation encoding="application/x-tex">12</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">12</span></span></span></span> skip-connections and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> middle block of the U-net.</li>
+<li>Since SD is a typical U-net structure, this ControlNet architecture is likely to be usable in other diffusion models.</li>
+</ol>
+<blockquote>
+<p>Note, the ControlNet is computationally efficient: since the original weights are locked, no gradient computation on the original encoder is needed for training. This can speed up training and save GPU memory, as half of the gradient computation on the original model can be avoided.</p>
+</blockquote>
+<h2 id="training"><strong>Training</strong></h2>
+<ul>
+<li>On the surface, training is similar to any diffusion proces. Basically, the neural network is trained to predict the noise from the noisy image.</li>
+</ul>
+<blockquote>
+<p>Here, the image refers to the image in the latent space.</p>
+</blockquote>
+<ul>
+<li>Note, during the training, text prompts are randomly replaces by empty strings 50% of the time. This facilitates ControlNet’s capability to recognize semantic contents from input condition maps, e.g., Canny edge maps or human scribbles, etc. This is mainly because when the prompt is not visible for the SD model, the encoder tends to learn more semantics from input control maps as a replacement for the prompt.</li>
+</ul>
+<h3 id="type-of-training"><strong>Type of training</strong></h3>
+<h4 id="default-mode"><strong>Default mode</strong></h4>
+<ul>
+<li>In default mode, ControlNet is connected to “SD Middle Block” and “SD Decoder Block 1,2,3,4” as shown earlier.</li>
+</ul>
+<h3 id="small-scale-training"><strong>Small-scale training</strong></h3>
+<ul>
+<li>It can be used when computation device is limited. By disconnecting the link to decoder 1,2,3,4 and only connecting the middle block can improve the training speed by about a factor of 1.6. Moreover, when the model shows reasonable association between results and conditions, those disconnected links can be connected again in a continued training to facilitate accurate control.</li>
+</ul>
+<p>
+<img src="file:////Users/aayushgarg/diffusion-papers/ControlNet/images/small-scale.png"
+alt="" style="align="center" width="800px"/>
+</p>
+<h3 id="large-scale-training-clarify"><strong>Large-scale training (<em>Clarify?</em>)</strong></h3>
+<ul>
+<li>This applies to the situation, when there are &gt;1 million examples (e.g., edge maps) and sufficient compute is available.</li>
+<li>Since the risk of over-fitting is relatively low, first train ControlNets for a large enough number of iterations (usually more than 50k steps), and then unlock all weights of the Stable Diffusion and jointly train the entire model as a whole. This would lead to a more problem-specific model.</li>
+</ul>
+<p>
+<img src="file:////Users/aayushgarg/diffusion-papers/ControlNet/images/large-scale.png"
+alt="" style="align="center" width="800px"/>
+</p>
+<h2 id="experiments"><strong>Experiments</strong></h2>
+<h3 id="experiment-settings"><strong>Experiment settings</strong></h3>
+<ul>
+<li><strong>CFG-scale</strong> : 9.0</li>
+<li><strong>Sampler</strong>: DDIM</li>
+<li><strong>Steps</strong>: 20</li>
+<li>All captions are generated using BLIP model</li>
+<li><strong>Prompts</strong>: 3 Types
+<ul>
+<li><strong>No prompt</strong>:empty string “”</li>
+<li><strong>Default prompt</strong>: “a professional, detailed, high-quality image”
+<blockquote>
+<p>SD tends to generate random texture maps if no prompt is provided. It starts Hallucinating</p>
+</blockquote>
+</li>
+<li><strong>Automatic prompt</strong>: BLIP generated captions (for fully automated pipeline)</li>
+<li><strong>User-defined prompts</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<h3 id="different-input-conditions"><strong>Different input conditions</strong></h3>
+<p>
+<img src="file:////Users/aayushgarg/diffusion-papers/ControlNet/images/comparison_detection_types.png"
+alt="" style="align="center" width="800px"/>
+</p>
+<h3 id="simple-examples-with-high-modifications-allowed"><strong>Simple examples with high-modifications allowed</strong></h3>
+<p>
+<img src="file:////Users/aayushgarg/diffusion-papers/ControlNet/images/simple_examples.png"
+alt="" style="align="center" width="800px"/>
+</p>
+<h3 id="coarse-control"><strong>Coarse control</strong></h3>
+<p>
+<img src="file:////Users/aayushgarg/diffusion-papers/ControlNet/images/coarse_control.png"
+alt="" style="align="center" width="800px"/>
+</p>
+<h3 id="comparison-depth-maps"><strong>Comparison depth-maps</strong></h3>
+<p>
+<img src="file:////Users/aayushgarg/diffusion-papers/ControlNet/images/comparison_sd_depth2image.png"
+alt="" style="align="center" width="800px"/>
+</p>
+<blockquote>
+<p>They have trained the depth-map controlnet in two modes, small-scale and large-scale training (3M examples).</p>
+</blockquote>
+<h3 id="limitations"><strong>Limitations</strong></h3>
+<p>
+<img src="file:////Users/aayushgarg/diffusion-papers/ControlNet/images/limitation.png"
+alt="" style="align="center" width="800px"/>
+</p>
+<h3 id="stable-diffusion-variants-as-base-model"><strong>Stable diffusion variants as base model</strong></h3>
+<blockquote>
+<p><em>&quot;Cartoon Line Drawing We use a cartoon line drawing extracting method [61] to extract line drawings from cartoon illustration from internet. By sorting the cartoon images with popularity, we obtain the top 1M lineart-cartoon-caption pairs. The model is trained with 300 GPU-hours with Nvidia A100 80G. The base model is Waifu Diffusion (an interesting community-developed variation model from stable diffusion [36]).&quot;</em></p>
+</blockquote>
+<p>
+<img src="file:////Users/aayushgarg/diffusion-papers/ControlNet/images/anime.png"
+alt="" style="align="center" width="800px"/>
+</p>
+<blockquote>
+<p>This shows, we can use our own SD-based model with their code to train a ControlNet.</p>
+</blockquote>
+<h3 id="image-editing"><strong>Image editing</strong></h3>
+<p>
+<img src="file:////Users/aayushgarg/diffusion-papers/ControlNet/images/image_editing.png"
+alt="" style="align="center" width="800px"/>
+</p>
+<h3 id="training-data-size"><strong>Training data size</strong></h3>
+<p>
+<img src="file:////Users/aayushgarg/diffusion-papers/ControlNet/images/data_scale.png"
+alt="" style="align="center" width="800px"/>
+</p>
+<blockquote>
+<p>The <strong>User-based sketching</strong> and <strong>Hough line</strong> are trasfer learning examples where trained canny model is used as the starting point.</p>
+</blockquote>
+<h2 id="sudden-convergence-phenomenon"><strong>Sudden Convergence Phenomenon</strong></h2>
+<blockquote>
+<p><em>&quot;You will always find that at some iterations, the model &quot;suddenly&quot; be able to fit some training conditions. This means that you will get a basically usable model at about 3k to 7k steps (future training will improve it, but that model after the first &quot;sudden converge&quot; should be basically functional). Because that &quot;sudden converge&quot; always happens, lets say &quot;sudden converge&quot; will happen at 3k step and our money can optimize 90k step, then we have two options: (1) train 3k steps, sudden converge, then train 87k steps. (2) 30x gradient accumulation, train 3k steps (90k real computation steps), then sudden converge. In my experiments, (2) is usually better than (1). However, in real cases, perhaps you may need to balance the steps before and after the &quot;sudden converge&quot; on your own to find a balance. The training after &quot;sudden converge&quot; is also important.&quot;</em></p>
+</blockquote>
+<p>
+<img src="file:////Users/aayushgarg/diffusion-papers/ControlNet/images/sudden_convergence_phenomenon.png"
+alt="" style="align="center" width="800px"/>
+</p>
+
+        <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+        
+    </body>
+    </html>
