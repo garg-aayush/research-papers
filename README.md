@@ -6,41 +6,49 @@ This repository houses my personal summaries and notes on a variety of academic 
 1. Attention Is All You Need, Vaswani et. al.
    - [[`Archive link`](https://arxiv.org/abs/1706.03762)] [[`Paper explanation video: Yanic Kilcher`](https://www.youtube.com/watch?v=iDulhoQ2pro&t=2s)] [[`Basic annotated implementation`](http://nlp.seas.harvard.edu/annotated-transformer/)]
    - [[`Very very short summary`](#attention-is-all-you-need)] 
-   - [[`Summary and notes`](#fmfmf)]
+   - [[`Summary notes`](Summaries/Attention_Is_All_You_Need.md)]
+
+2. An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale, Dosovitskiy et. al.
+
+3. Swin Transformer: Hierarchical Vision Transformer using Shifted Windows, Liu et. al.
 
 
+4. Denoising Diffusion Probabilistic Models, Ho et. al.
+  - [[`Archive link`](https://arxiv.org/abs/2006.11239)] [[`Paper explanation video: Yanic Kilcher`](https://www.youtube.com/watch?v=W-O7AZNzbzQ)] [[`Basic annotated implementation`](https://nn.labml.ai/diffusion/ddpm/index.html)]
+   - [[`Very very short summary`](#ddpm)] 
+   - [[`Summary notes`](Summaries/DDPM.md)]
 
-### T1
-- [ ] [Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2006.11239)
-- [ ] [Denoising Diffusion Implicit Models](https://arxiv.org/abs/2010.02502)
-- [ ] [GLIDE: Towards Photorealistic Image Generation and Editing with Text-Guided Diffusion Models](https://arxiv.org/abs/2112.10741)
-- [ ] [Learning Transferable Visual Models From Natural Language Supervision](https://arxiv.org/abs/2103.00020)
-- [ ] [High-Resolution Image Synthesis with Latent Diffusion Models](https://arxiv.org/abs/2112.10752)
-- [ ] [Palette: Image-to-Image Diffusion Models](https://arxiv.org/abs/2111.05826)
-- [ ] [Image Super-Resolution via Iterative Refinement](https://arxiv.org/abs/2104.07636)
-- [ ] [Diffusion Models Beat GANs on Image Synthesis](https://arxiv.org/abs/2105.05233)
-- [ ] [Progressive Distillation for Fast Sampling of Diffusion Models](https://arxiv.org/abs/2202.00512)
-- [ ] [On Distillation of Guided Diffusion Models](https://arxiv.org/abs/2210.03142)
-- [ ] [Muse: Text-To-Image Generation via Masked Generative Transformers](https://arxiv.org/abs/2301.00704)
-- [ ] [InstructPix2Pix: Learning to Follow Image Editing Instructions](https://arxiv.org/abs/2211.09800)
-- [ ] [Cold Diffusion: Inverting Arbitrary Image Transforms Without Noise](https://arxiv.org/abs/2208.09392)
-- [ ] [eDiff-I: Text-to-Image Diffusion Models with an Ensemble of Expert Denoisers](https://arxiv.org/abs/2211.01324)
 
-### T1
-- [ ] [Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2006.11239)
-- [ ] [Denoising Diffusion Implicit Models](https://arxiv.org/abs/2010.02502)
-- [ ] [GLIDE: Towards Photorealistic Image Generation and Editing with Text-Guided Diffusion Models](https://arxiv.org/abs/2112.10741)
-- [ ] [Learning Transferable Visual Models From Natural Language Supervision](https://arxiv.org/abs/2103.00020)
-- [ ] [High-Resolution Image Synthesis with Latent Diffusion Models](https://arxiv.org/abs/2112.10752)
-- [ ] [Palette: Image-to-Image Diffusion Models](https://arxiv.org/abs/2111.05826)
-- [ ] [Image Super-Resolution via Iterative Refinement](https://arxiv.org/abs/2104.07636)
-- [ ] [Diffusion Models Beat GANs on Image Synthesis](https://arxiv.org/abs/2105.05233)
-- [ ] [Progressive Distillation for Fast Sampling of Diffusion Models](https://arxiv.org/abs/2202.00512)
-- [ ] [On Distillation of Guided Diffusion Models](https://arxiv.org/abs/2210.03142)
-- [ ] [Muse: Text-To-Image Generation via Masked Generative Transformers](https://arxiv.org/abs/2301.00704)
-- [ ] [InstructPix2Pix: Learning to Follow Image Editing Instructions](https://arxiv.org/abs/2211.09800)
-- [ ] [Cold Diffusion: Inverting Arbitrary Image Transforms Without Noise](https://arxiv.org/abs/2208.09392)
-- [ ] [eDiff-I: Text-to-Image Diffusion Models with an Ensemble of Expert Denoisers](https://arxiv.org/abs/2211.01324)
+5. Denoising Diffusion Implicit Models, Song et. al.
+
+6. High-Resolution Image Synthesis with Latent Diffusion Models, Rombach. et. al.
+
+
+7. Adding Conditional Control to Text-to-Image Diffusion Models, Lvmin Zhang and Maneesh Agarwala et. al.
+  - [[`Archive link`](https://arxiv.org/abs/2302.05543)] [[`Github repository`](https://github.com/ZPdesu/Barbershop)] [[`Paper explanation video: Original authors`](https://www.youtube.com/watch?v=zk_NhOuAYmo&t=7s)
+  - [[`Very very short summary`](#controlnet)] 
+  - [[`Summary notes`](Summaries/ControlNet.md)]
+
+
+7. Null-text Inversion for Editing Real Images using Guided Diffusion Models, Mokady et. al.
+   
+8. SDXL: Improving Latent Diffusion Models for High-Resolution Image Synthesis, Podell et. al.
+
+9. Photoswap: Personalized Subject Swapping in Images, Gu et. al.
+
+10. SDEdit: Guided Image Synthesis and Editing with Stochastic Differential Equations, Meng et. al.
+
+11. Barbershop: GAN-based Image Compositing using Segmentation Masks, Zhu et. al.
+   - [[`Archive link`](https://arxiv.org/abs/2106.01505)] [[`Github repository`](https://github.com/lllyasviel/ControlNet)] [[`Huggingface blog`](https://huggingface.co/blog/controlnet)] 
+   - [[`Very very short summary`](#barbershop)] 
+   - [[`Summary notes`](Summaries/Barbershop.md)]
+
+12.   Barbershop: GAN-based Image Compositing using Segmentation Masks, Zhu et. al.
+   - [[`Archive link`](https://arxiv.org/abs/2204.11823)] [[`Github repository`](https://github.com/stylegan-human/StyleGAN-Human)] [[`Project page`](https://stylegan-human.github.io/)]
+   - [[`Very very short summary`](#stylegan-human)] 
+   - [[`Summary notes`](Summaries/StyleGAN-Human.md)]
+   
+
 
 ## Very very short summaries
 ### Attention Is All You Need
@@ -53,3 +61,15 @@ This repository houses my personal summaries and notes on a variety of academic 
 - Ability to learn long-range dependencies
 - Can be parallelized
 - Implements multiple head of attention in parallel
+
+### DDPM
+- Lorem ipsum
+
+### ControlNet
+- Lorem Ipsum
+
+### Barbershop
+- Lorem Ipsum
+
+### StyleGAN-Human
+- Lorem Ipsum
