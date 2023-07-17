@@ -1,23 +1,21 @@
-# Adding Conditional Control to Text-to-Image Diffusion Models
-- Paper: https://arxiv.org/abs/2302.05543
-- Github repo: https://github.com/lllyasviel/ControlNet
+# Summary Notes (Controlnet)
 
 _**Canny Edges as the condition**_
 <p>
-<img src="images/p1.png"
+<img src="images/controlnet/p1.png"
 alt="" style="align="center" width="800px"/>
 </p>
 
 _**Depth maps as the condition**_
 <p>
-<img src="images/p15.png"
+<img src="images/controlnet/p15.png"
 alt="" style="align="center" width="800px"/>
 </p>
 
 > In the examples, you don't require fancy prompts. May be its the combination of condition and training data used for training. Maybe simple prompts used in training? 
 
 ## **Table of contents**
-- [Adding Conditional Control to Text-to-Image Diffusion Models](#adding-conditional-control-to-text-to-image-diffusion-models)
+- [Summary Notes (Controlnet)](#summary-notes-controlnet)
   - [**Table of contents**](#table-of-contents)
   - [**Summary**](#summary)
   - [**Why do we need solutions like ControlNet?**](#why-do-we-need-solutions-like-controlnet)
@@ -42,7 +40,7 @@ alt="" style="align="center" width="800px"/>
     - [**Image editing**](#image-editing)
     - [**Training data size**](#training-data-size)
   - [**Sudden Convergence Phenomenon**](#sudden-convergence-phenomenon)
-  - [Starting experiment](#starting-experiment)
+  - [Acknowledgments and references](#acknowledgments-and-references)
 
 ## **Summary**
 - _**ControlNet**_, allows _**additional control**_ for the pre-trained large diffusion models, such as Stable diffusion, by providing the facility of input **visual** conditions such as edge maps, segment masks, depth masks, etc.
@@ -83,7 +81,7 @@ $$ y = F (\mathbf{x}; \theta)$$
 $$ y = F (\mathbf{x}; \theta) + \mathcal{Z}(F(x + \mathcal{Z}(c;\theta_{z2}); \theta_c);\theta_{z2})$$
 
 <p>
-<img src="images/controlnet_skeleton.png"
+<img src="images/controlnet/controlnet_skeleton.png"
 alt="" style="align="center" width="800px"/>
 </p>
 
@@ -98,7 +96,7 @@ alt="" style="align="center" width="800px"/>
 2. Stable Diffusion is essentially an U-net with an encoder, a middle block, and a skip-connected decoder. Both the encoder and decoder have $12$ blocks, and the full model has $25$ blocks (including the middle block). In those blocks, $8$ blocks are down-sampling or up-sampling convolution layers, $17$ blocks are main blocks that each contains four resnet layers and two Vision Transformers (ViTs). Each Vit contains several cross-attention and/or self-attention mechanisms. 
 
 <p>
-<img src="images/controlnet_sd.png"
+<img src="images/controlnet/controlnet_sd.png"
 alt="" style="align="center" width="800px"/>
 </p>
 
@@ -125,7 +123,7 @@ alt="" style="align="center" width="800px"/>
 - It can be used when computation device is limited. By disconnecting the link to decoder 1,2,3,4 and only connecting the middle block can improve the training speed by about a factor of 1.6. Moreover, when the model shows reasonable association between results and conditions, those disconnected links can be connected again in a continued training to facilitate accurate control.
 
 <p>
-<img src="images/small-scale.png"
+<img src="images/controlnet/small-scale.png"
 alt="" style="align="center" width="800px"/>
 </p>
 
@@ -134,7 +132,7 @@ alt="" style="align="center" width="800px"/>
 - Since the risk of over-fitting is relatively low, first train ControlNets for a large enough number of iterations (usually more than 50k steps), and then unlock all weights of the Stable Diffusion and jointly train the entire model as a whole. This would lead to a more problem-specific model.
 
 <p>
-<img src="images/large-scale.png"
+<img src="images/controlnet/large-scale.png"
 alt="" style="align="center" width="800px"/>
 </p>
 
@@ -157,26 +155,26 @@ alt="" style="align="center" width="800px"/>
 
 ### **Different input conditions**
 <p>
-<img src="images/comparison_detection_types.png"
+<img src="images/controlnet/comparison_detection_types.png"
 alt="" style="align="center" width="800px"/>
 </p>
 
 ### **Simple examples with high-modifications allowed**
 <p>
-<img src="images/simple_examples.png"
+<img src="images/controlnet/simple_examples.png"
 alt="" style="align="center" width="800px"/>
 </p>
 
 ### **Coarse control**
 <p>
-<img src="images/coarse_control.png"
+<img src="images/controlnet/coarse_control.png"
 alt="" style="align="center" width="800px"/>
 </p>
 
 ### **Comparison depth-maps**
 
 <p>
-<img src="images/comparison_sd_depth2image.png"
+<img src="images/controlnet/comparison_sd_depth2image.png"
 alt="" style="align="center" width="800px"/>
 </p>
 
@@ -184,7 +182,7 @@ alt="" style="align="center" width="800px"/>
 
 ### **Limitations**
 <p>
-<img src="images/limitation.png"
+<img src="images/controlnet/limitation.png"
 alt="" style="align="center" width="800px"/>
 </p>
 
@@ -192,7 +190,7 @@ alt="" style="align="center" width="800px"/>
 > _"Cartoon Line Drawing We use a cartoon line drawing extracting method [61] to extract line drawings from cartoon illustration from internet. By sorting the cartoon images with popularity, we obtain the top 1M lineart-cartoon-caption pairs. The model is trained with 300 GPU-hours with Nvidia A100 80G. The base model is Waifu Diffusion (an interesting community-developed variation model from stable diffusion [36])."_
 
 <p>
-<img src="images/anime.png"
+<img src="images/controlnet/anime.png"
 alt="" style="align="center" width="800px"/>
 </p>
 
@@ -200,13 +198,13 @@ alt="" style="align="center" width="800px"/>
 
 ### **Image editing**
 <p>
-<img src="images/image_editing.png"
+<img src="images/controlnet/image_editing.png"
 alt="" style="align="center" width="800px"/>
 </p>
 
 ### **Training data size**
 <p>
-<img src="images/data_scale.png"
+<img src="images/controlnet/data_scale.png"
 alt="" style="align="center" width="800px"/>
 </p>
 
@@ -217,9 +215,10 @@ alt="" style="align="center" width="800px"/>
 > _"You will always find that at some iterations, the model "suddenly" be able to fit some training conditions. This means that you will get a basically usable model at about 3k to 7k steps (future training will improve it, but that model after the first "sudden converge" should be basically functional). Because that "sudden converge" always happens, lets say "sudden converge" will happen at 3k step and our money can optimize 90k step, then we have two options: (1) train 3k steps, sudden converge, then train 87k steps. (2) 30x gradient accumulation, train 3k steps (90k real computation steps), then sudden converge. In my experiments, (2) is usually better than (1). However, in real cases, perhaps you may need to balance the steps before and after the "sudden converge" on your own to find a balance. The training after "sudden converge" is also important."_
 
 <p>
-<img src="images/sudden_convergence_phenomenon.png"
+<img src="images/controlnet/sudden_convergence_phenomenon.png"
 alt="" style="align="center" width="800px"/>
 </p>
 
-
-## Starting experiment
+## Acknowledgments and references
+- Paper: https://arxiv.org/abs/2302.05543
+- Github repo: https://github.com/lllyasviel/ControlNet

@@ -1,4 +1,4 @@
-# DDPM
+# Summary Notes (DDPM)
 
 ## Introduction
 - As mentioned in the diffusion models introduction, a (denoising) Diffusion model is a kind of generative model that is used to generate data similar to the data it is trained on. 
@@ -16,7 +16,7 @@
 ## Forward diffusion process
 For a sample $\bar{x}_0$ from the given real distribution, $q(x_0)$, we define a forward diffusion process, $q(\bar{x}_{1:T} | \bar{x}_{0})$, in which we add small amount of Gaussian noise to the $\bar{x}_0$ in $T$ steps, producing a sequence of noisy samples $\bar{x}_1$, $\bar{x}_2$,...,$\bar{x}_T$, according to a pre-defined variance schedule $\{\beta_t \in (0,1) \}_{t=1}^{T}$. The data sample gradually loses its features as the steps approaches $T$ such that $\bar{x}^T$ is equivalent to isotropic Gaussian noise. 
 
-![forward process](images/forwardprocess.png)
+![forward process](images/ddpm/forwardprocess.png)
 
 As the forward process is a Markov chain, therefore:
 
@@ -32,7 +32,7 @@ $$q(\bar{x}_{t} | \bar{x}_{0}) = \mathcal{N}(\bar{x}_0; \sqrt{\bar{\alpha}_t}\ba
 Here, $\alpha_t=1-\beta_t$ and $\bar{\alpha}_t = \prod_{i=1}^{t} \alpha_i$.
 
 The following shows how to derive the forward diffusion process.
-![forward diffusion process](images/derivation1.jpg)
+![forward diffusion process](images/ddpm/derivation1.jpg)
 
 ## Reverse diffusion process
 If we know the $p(\bar{x}_{t-1} | \bar{x}_{t})$ conditional process, then we can reverse the forward process starting from pure noise and gradually "denoising" it so that we end up with a sample from the real distribution.
@@ -47,7 +47,7 @@ $$ p_{\theta}(\bar{x}_{0:T}) = p(\bar{x}_T) \prod_{t=1}^{T} \mathcal{N}(\bar{x}_
 
 Here, the time-dependent Gaussian parameters ($\mu_{\theta}$ and $\Sigma_{\theta}$) are learned.
 
-![forward process](images/reverseprocess.png)
+![forward process](images/ddpm/reverseprocess.png)
 
 ## Training $p_\theta$
 In order to find the optimal paramters ($\theta$), we need to maximize the likelihood of training data:
@@ -76,7 +76,7 @@ $$ L_t = D_{KL}(q(\bar{x}_{t-1}|\bar{x_t}, \bar{x}_0) \ \|\ p_\theta(\bar{x}_{t-
 $$ L_T = D_{KL}(q(\bar{x}_{T}|\bar{x_0}) \ \|\ p(\bar{x}_{T}))$$
 
 The following shows how to rewrite $\mathcal{L}_{ELBO}$ almost completely in terms of KL divergencess.
-![forward diffusion process](images/derivation2.jpg)
+![forward diffusion process](images/ddpm/derivation2.jpg)
 
 ### $L_{T}$ 
 $L_T$ is a constant and can be ignored during training since $q$ has no learnable parameters and $\bar{x}_T$ is a Guassian noise.
@@ -160,7 +160,7 @@ $$ L_{t,simple} = \mathbb{{E}_{t,0,\epsilon}}[\|  \epsilon_t - \epsilon_\theta(\
 
 
 The training and sampling algorithms for the Diffusion Model can be summarized as follows:
-![](images/algorithm.jpeg)
+![](images/ddpm/algorithm.jpeg)
 
 ### Network architecture
 The only requirement for the neural network is that its input and output dimensionality remain identical. Given this restriction, it is perhaps unsurprising that diffusion models are commonly implemented with U-Net-like architectures.
@@ -173,12 +173,12 @@ The only requirement for the neural network is that its input and output dimensi
 5. Training with Adam and used EMA
 6. Horizontal flips for CIFAR10
 
-### Summary
-> _See summary of [Assembly AI blog post on DDPMs](https://www.assemblyai.com/blog/diffusion-models-for-machine-learning-introduction/)_
 
-## Acknowlegements
+## Acknowlegements and references
 - [Assembly AI blog post on DDPMs](https://www.assemblyai.com/blog/diffusion-models-for-machine-learning-introduction/)
 - [Lillian's Weng post on diffusion models](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/#speed-up-diffusion-model-sampling)
 - [Huggingface DDPM blogpost](https://huggingface.co/blog/annotated-diffusion)
 - [Yannic Kilcher Video on DDPMs](https://www.youtube.com/watch?v=W-O7AZNzbzQ)
+
+
 
