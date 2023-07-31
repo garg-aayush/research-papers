@@ -75,6 +75,17 @@
   
 - Note, the self-attention mechanism used here has approx. unit maximum path length that allows the information not to be lost/forgotten over the large-sequences. 
 
+## Important points
+- A Transformer model with only attention mechanism as driving component, no RNN components
+- Encoder-decoder kind architecture with resnet-like connections
+- Contains MLP for increasing the learning even more complexity
+- Uses layer normalization instead of BatchNorm
+- Excellent hyperparemeters according to Andrej Karpathy (example, size of feed-forward layer (ffw_size=4) which kinda remain same upto now for many architectures)
+- A possible contender for being a general-purpose architecture
+- Ability to learn long-range dependencies
+- Can be parallelized
+- Implements multiple head of attention in parallel
+
 ## Acknowledgments
 - Transformers United 2023: Introduction to Transformers w/ Andrej Karpathy: https://www.youtube.com/watch?v=XfpMkf4rD6E
 - Original paper: https://arxiv.org/abs/1706.03762
