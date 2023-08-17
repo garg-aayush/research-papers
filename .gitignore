@@ -132,3 +132,4 @@ dmypy.json
 # backup
 backup*
 papers*
+.DS_Store
