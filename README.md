@@ -7,8 +7,9 @@ This repository houses my personal summaries and notes on a variety of academic 
 - Introduces a generative modeling using a continuous-time diffusion process, offering an alternative to adversarial and maximum likelihood methods
 - Produces image samples of quality comparable or superior to leading GANs and VAEs
 - Provides a theoretical foundation for diffusion models, linking them to other generative techniques
-    | [**`Summary notes`**](Summaries/DDPM.md) |  [`Paper explanation video: Yanic Kilcher`](https://www.youtube.com/watch?v=W-O7AZNzbzQ) |  [`Archive link`](https://arxiv.org/abs/2006.11239) |  [`Basic annotated implementation`](https://nn.labml.ai/diffusion/ddpm/index.html) |
-    |---|---|---|---|
+    | [**`Summary notes`**](Summaries/DDPM.md) |  [`Paper explanation video: Yanic Kilcher`](https://www.youtube.com/watch?v=W-O7AZNzbzQ) |
+    |---|---|
+    |  [**`Archive link`**](https://arxiv.org/abs/2006.11239) |  [**`Basic annotated implementation`**](https://nn.labml.ai/diffusion/ddpm/index.html) |
 
 ### 2. Improved Denoising Diffusion Probabilistic Models, Nichol A. and Dhariwal P.
 
@@ -33,15 +34,17 @@ This repository houses my personal summaries and notes on a variety of academic 
 - Introduces an accurate inversion scheme for **real input images**,  enabling intuitive and versatile text-based image modification without tuning model weights.
 - It achieving near-perfect reconstruction, while retaining the rich text-guided editing capabilities of the original model
 - The approach consists of two novel ideas, pivotal inversion (using DDIM inversion trajactory as the anchor noise vector) and null-text optimization (optimizing only the null-text embeddings)
-    | [**`Summary notes`**](Summaries/Null-TextInversion.md) |  [`Archive link`](https://arxiv.org/abs/2211.09794) | [`Paper walkthrough video: Original author`](https://www.youtube.com/watch?v=qzTlzrMWU2M&t=52s) | [`Github repo`](https://github.com/google/prompt-to-prompt/#null-text-inversion-for-editing-real-images)  |
-    |---|---|---|---|
+    | [**`Summary notes`**](Summaries/Null-TextInversion.md) |  [`Archive link`](https://arxiv.org/abs/2211.09794) |
+    |---|---|
+    | [**`Paper walkthrough video: Original author`**](https://www.youtube.com/watch?v=qzTlzrMWU2M&t=52s) | [**`Github repo`**](https://github.com/google/prompt-to-prompt/#null-text-inversion-for-editing-real-images)  |
 ### 8. Adding Conditional Control to Text-to-Image Diffusion Models, Lvmin Zhang and Maneesh Agarwala et. al.
 - Allows additional control for the pre-trained large diffusion models, such as Stable diffusion, by providing the facility of input visual conditions such as edge maps, segment masks, depth masks, etc.
 - Learns task-specific conditions in an end-to-end way
 - Training is as fast as fine-tuning a diffusion model, and for small dataset (<50k), it can be trained to produce robust results even on desktop-grade personal GPUs.
 - Multiple controlnets can be combinded at inference time to have multiple control visual conditions
-    | [**`Summary notes`**](Summaries/ControlNet.md) |  [`Archive link`](https://arxiv.org/abs/2302.05543) | [`Github repo`](https://github.com/lllyasviel/ControlNet)|  [`HF usage example`](https://huggingface.co/blog/controlnet) |  [`Controlnet 1.0 and 1.1 ckpts for SD1.5`](https://huggingface.co/lllyasviel) |  [`Controlnet  ckpts for SDXL`](https://huggingface.co/models?other=stable-diffusion-xl&other=controlnet) |
-    |---|---|---|---|---|---|
+    | [**`Summary notes`**](Summaries/ControlNet.md) |  [`Archive link`](https://arxiv.org/abs/2302.05543) | [`Github repo`](https://github.com/lllyasviel/ControlNet)|
+    |---|---|---|
+    |  [**`HF usage example`**](https://huggingface.co/blog/controlnet) |[**`Controlnet SD1.5 1.0 and 1.1 ckpts`**](https://huggingface.co/lllyasviel) |  [**`Controlnet SDXL ckpts`**](https://huggingface.co/models?other=stable-diffusion-xl&other=controlnet) |
 
 ### 9. DreamPose: Fashion Image-to-Video Synthesis via Stable Diffusion, Karras et. al.
 -  An image-and-pose conditioned diffusion method based upon Stable Diffusion to turn fashion photographs into realistic, animated videos
@@ -54,8 +57,9 @@ This repository houses my personal summaries and notes on a variety of academic 
 - Introduces an enhanced stable diffusion model that surpasses the generating capabilities of previous versions
 - Uses a larger UNet backbone and introducing novel conditioning schemes in the training stage
 - Probably, the best public domain open-source text-to-image model at this moment (Aug, 2023)
-    | [**`Summary notes`**](Summaries/DreamPose.md) |  [`Archive link`](https://arxiv.org/abs/2307.01952) | [`Paper walkthrough video: Two minute papers`](https://www.youtube.com/watch?v=kkYaikeLJdc) | [`HF usage example`](https://huggingface.co/docs/diffusers/api/pipelines/stable_diffusion/stable_diffusion_xl)  |
-    |---|---|---|---|
-
+    | [**`Summary notes`**](Summaries/DreamPose.md) |  [`Archive link`](https://arxiv.org/abs/2307.01952) | 
+    |---|---|
+    | [**`Paper walkthrough video: Two minute papers`**](https://www.youtube.com/watch?v=kkYaikeLJdc) | [**`HF usage example`**](https://huggingface.co/docs/diffusers/api/pipelines/stable_diffusion/stable_diffusion_xl)  |
+    
 
   
