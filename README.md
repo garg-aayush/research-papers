@@ -4,10 +4,11 @@ This repository houses my personal summaries and notes on a variety of academic 
 
 ## Papers
 ### 1. Denoising Diffusion Probabilistic Models, Ho et. al.
-It presents a generative model that employs denoising diffusion processes to learn and generate realistic images. By iteratively adding noise and removing it, the model learns a diffusion process that captures the underlying distribution of complex image data, enabling high-quality image synthesis.
-
-- [[`Archive link`](https://arxiv.org/abs/2006.11239)] [[`Paper explanation video: Yanic Kilcher`](https://www.youtube.com/watch?v=W-O7AZNzbzQ)] [[`Basic annotated implementation`](https://nn.labml.ai/diffusion/ddpm/index.html)]
-- [**`Summary notes`**](Summaries/DDPM.md)
+- Introduces a generative modeling using a continuous-time diffusion process, offering an alternative to adversarial and maximum likelihood methods
+- Produces image samples of quality comparable or superior to leading GANs and VAEs
+- Provides a theoretical foundation for diffusion models, linking them to other generative techniques
+    | [**`Summary notes`**](Summaries/DDPM.md) |  [`Paper explanation video: Yanic Kilcher`](https://www.youtube.com/watch?v=W-O7AZNzbzQ) |  [`Archive link`](https://arxiv.org/abs/2006.11239) |  [`Basic annotated implementation`](https://nn.labml.ai/diffusion/ddpm/index.html) |
+    |---|---|---|---|
 
 ### 2. Improved Denoising Diffusion Probabilistic Models, Nichol A. and Dhariwal P.
 
@@ -15,24 +16,46 @@ It presents a generative model that employs denoising diffusion processes to lea
 ### 3. Diffusion Models Beat GANs on Image Synthesis, Dhariwal P. and Nichol A.
 
 ### 4. Denoising Diffusion Implicit Models, Song et. al.
-It presents a more efficient alternative sampling (DDIM) in comparison to DDPMs for high-quality image generation. By constructing non-Markovian diffusion processes, DDIMs achieve faster sampling, enabling trade-offs between computation and sample quality, and facilitating meaningful image interpolation in the latent space.
-
+- Present DDIMS which are implicit probabilistic models and can produce high quality samples **10X** to **50X** faster (in about 50 steps) in comparison to DDPM
+- Generalizes DDPMs by using a class of non-Markovian diffusion process that lead to "short" generative Markov chains that can simulate image generation in a small number of steps
+- The training objective in DDIM is similar to DDPM, one can use any pretrained DDPM model with DDIM or other generative processes that can generative images in least steps
+    | [**`Summary notes`**](Summaries/DDIM.md) |  [`Archive link`](https://arxiv.org/abs/2010.02502) |  [`Github repo`](https://github.com/ermongroup/ddim) |
+    |---|---|---|
 ### 5. High-Resolution Image Synthesis with Latent Diffusion Models, Rombach et. al.
 
 ### 6. Prompt-to-Prompt Image Editing with Cross Attention Control, Hertz et. al.
-
+- Introduces a textual editing method to semantically edit images in pre-trained text-conditioned diffusion models via Prompt-to-Prompt manipulations
+- Approach allows for editing the image while preserving the original composition of the image and addressing the content of the new prompt.  
+- The key idea is that onr can edit images by injecting the cross-attention maps during the diffusion process, controlling which pixels attend to which tokens of the prompt text during which diffusion steps. 
+    | [**`Summary notes`**](Summaries/Prompt-to-prompt.md) |  [`Archive link`](https://arxiv.org/abs/2208.01626) | [`Github repo`](https://github.com/google/prompt-to-prompt/) |
+    |---|---|---|
 ### 7. Null-text Inversion for Editing Real Images using Guided Diffusion Models, Mokady et. al.
-The paper introduces an accurate inversion technique for text-guided diffusion models, enabling intuitive and versatile text-based image modification without tuning model weights. The proposed method demonstrates high-fidelity editing of real images through pivotal inversion and NULL-text optimization, showcasing its efficacy in prompt-based editing scenarios.
-num
-
+- Introduces an accurate inversion scheme for **real input images**,  enabling intuitive and versatile text-based image modification without tuning model weights.
+- It achieving near-perfect reconstruction, while retaining the rich text-guided editing capabilities of the original model
+- The approach consists of two novel ideas, pivotal inversion (using DDIM inversion trajactory as the anchor noise vector) and null-text optimization (optimizing only the null-text embeddings)
+    | [**`Summary notes`**](Summaries/Null-TextInversion.md) |  [`Archive link`](https://arxiv.org/abs/2211.09794) | [`Paper walkthrough video: Original author`](https://www.youtube.com/watch?v=qzTlzrMWU2M&t=52s) | [`Github repo`](https://github.com/google/prompt-to-prompt/#null-text-inversion-for-editing-real-images)  |
+    |---|---|---|---|
 ### 8. Adding Conditional Control to Text-to-Image Diffusion Models, Lvmin Zhang and Maneesh Agarwala et. al.
-The authors propose an architecture called ControlNet that enhances control over the image generation process in the diffusion/stable diffusion process, enabling the generation of specific and desired images. This is achieved by incorporating conditional inputs, such as edge maps, segmentation maps, and keypoints, into the diffusion model.
+- Allows additional control for the pre-trained large diffusion models, such as Stable diffusion, by providing the facility of input visual conditions such as edge maps, segment masks, depth masks, etc.
+- Learns task-specific conditions in an end-to-end way
+- Training is as fast as fine-tuning a diffusion model, and for small dataset (<50k), it can be trained to produce robust results even on desktop-grade personal GPUs.
+- Multiple controlnets can be combinded at inference time to have multiple control visual conditions
+    | [**`Summary notes`**](Summaries/ControlNet.md) |  [`Archive link`](https://arxiv.org/abs/2302.05543) | [`Github repo`](https://github.com/lllyasviel/ControlNet)|  [`HF usage example`](https://huggingface.co/blog/controlnet) |  [`Controlnet 1.0 and 1.1 ckpts for SD1.5`](https://huggingface.co/lllyasviel) |  [`Controlnet  ckpts for SDXL`](https://huggingface.co/models?other=stable-diffusion-xl&other=controlnet) |
+    |---|---|---|---|---|---|
 
 ### 9. DreamPose: Fashion Image-to-Video Synthesis via Stable Diffusion, Karras et. al.
+-  An image-and-pose conditioned diffusion method based upon Stable Diffusion to turn fashion photographs into realistic, animated videos
+-  Introduces a pose conditioning approach that greatly improves temporal consistency across frames
+-  Uses an image CLIP and VAE encoder, instead of text encoder, that increases the output fidelity to the conditioning image
+    | [**`Summary notes`**](Summaries/SDXL.md) |  [`Archive link`](https://arxiv.org/abs/2304.06025) | [`Github repo`](https://github.com/johannakarras/DreamPose)|
+    |---|---|---|
 
 ### 10. SDXL: Improving Latent Diffusion Models for High-Resolution Image Synthesis, Podell et. al.
-The paper introduces an enhanced stable diffusion model that surpasses the generating capabilities of previous versions. This is achieved by incorporating a larger UNet backbone and introducing novel conditioning schemes in the training stage.
+- Introduces an enhanced stable diffusion model that surpasses the generating capabilities of previous versions
+- Uses a larger UNet backbone and introducing novel conditioning schemes in the training stage
+- Probably, the best public domain open-source text-to-image model at this moment (Aug, 2023)
+    | [**`Summary notes`**](Summaries/DreamPose.md) |  [`Archive link`](https://arxiv.org/abs/2307.01952) | [`Paper walkthrough video: Two minute papers`](https://www.youtube.com/watch?v=kkYaikeLJdc) | [`HF usage example`](https://huggingface.co/docs/diffusers/api/pipelines/stable_diffusion/stable_diffusion_xl)  |
+    |---|---|---|---|
 
 
-
-
+  
