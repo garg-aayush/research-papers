@@ -10,11 +10,14 @@ This repository houses my personal summaries and notes on a variety of academic 
     | [**`Summary notes`**](Summaries/DDPM.md) |  [`Paper explanation video: Yanic Kilcher`](https://www.youtube.com/watch?v=W-O7AZNzbzQ) |
     |---|---|
     |  [**`Archive link`**](https://arxiv.org/abs/2006.11239) |  [**`Basic annotated implementation`**](https://nn.labml.ai/diffusion/ddpm/index.html) |
+<br></br>
 
 ### 2. Improved Denoising Diffusion Probabilistic Models, Nichol A. and Dhariwal P.
+<br></br>
 
 
 ### 3. Diffusion Models Beat GANs on Image Synthesis, Dhariwal P. and Nichol A.
+<br></br>
 
 ### 4. Denoising Diffusion Implicit Models, Song et. al.
 - Present DDIMS which are implicit probabilistic models and can produce high quality samples **10X** to **50X** faster (in about 50 steps) in comparison to DDPM
@@ -22,7 +25,10 @@ This repository houses my personal summaries and notes on a variety of academic 
 - The training objective in DDIM is similar to DDPM, one can use any pretrained DDPM model with DDIM or other generative processes that can generative images in least steps
     | [**`Summary notes`**](Summaries/DDIM.md) |  [`Archive link`](https://arxiv.org/abs/2010.02502) |  [`Github repo`](https://github.com/ermongroup/ddim) |
     |---|---|---|
+<br></br>
+
 ### 5. High-Resolution Image Synthesis with Latent Diffusion Models, Rombach et. al.
+<br></br>
 
 ### 6. Prompt-to-Prompt Image Editing with Cross Attention Control, Hertz et. al.
 - Introduces a textual editing method to semantically edit images in pre-trained text-conditioned diffusion models via Prompt-to-Prompt manipulations
@@ -30,6 +36,8 @@ This repository houses my personal summaries and notes on a variety of academic 
 - The key idea is that onr can edit images by injecting the cross-attention maps during the diffusion process, controlling which pixels attend to which tokens of the prompt text during which diffusion steps. 
     | [**`Summary notes`**](Summaries/Prompt-to-prompt.md) |  [`Archive link`](https://arxiv.org/abs/2208.01626) | [`Github repo`](https://github.com/google/prompt-to-prompt/) |
     |---|---|---|
+<br></br>
+
 ### 7. Null-text Inversion for Editing Real Images using Guided Diffusion Models, Mokady et. al.
 - Introduces an accurate inversion scheme for **real input images**,  enabling intuitive and versatile text-based image modification without tuning model weights.
 - It achieving near-perfect reconstruction, while retaining the rich text-guided editing capabilities of the original model
@@ -37,6 +45,8 @@ This repository houses my personal summaries and notes on a variety of academic 
     | [**`Summary notes`**](Summaries/Null-TextInversion.md) |  [`Archive link`](https://arxiv.org/abs/2211.09794) |
     |---|---|
     | [**`Paper walkthrough video: Original author`**](https://www.youtube.com/watch?v=qzTlzrMWU2M&t=52s) | [**`Github repo`**](https://github.com/google/prompt-to-prompt/#null-text-inversion-for-editing-real-images)  |
+<br></br>
+
 ### 8. Adding Conditional Control to Text-to-Image Diffusion Models, Lvmin Zhang and Maneesh Agarwala et. al.
 - Allows additional control for the pre-trained large diffusion models, such as Stable diffusion, by providing the facility of input visual conditions such as edge maps, segment masks, depth masks, etc.
 - Learns task-specific conditions in an end-to-end way
@@ -46,12 +56,15 @@ This repository houses my personal summaries and notes on a variety of academic 
     |---|---|---|
     |  [**`HF usage example`**](https://huggingface.co/blog/controlnet) |[**`Controlnet SD1.5 1.0 and 1.1 ckpts`**](https://huggingface.co/lllyasviel) |  [**`Controlnet SDXL ckpts`**](https://huggingface.co/models?other=stable-diffusion-xl&other=controlnet) |
 
+<br></br>
+
 ### 9. DreamPose: Fashion Image-to-Video Synthesis via Stable Diffusion, Karras et. al.
 -  An image-and-pose conditioned diffusion method based upon Stable Diffusion to turn fashion photographs into realistic, animated videos
 -  Introduces a pose conditioning approach that greatly improves temporal consistency across frames
 -  Uses an image CLIP and VAE encoder, instead of text encoder, that increases the output fidelity to the conditioning image
     | [**`Summary notes`**](Summaries/SDXL.md) |  [`Archive link`](https://arxiv.org/abs/2304.06025) | [`Github repo`](https://github.com/johannakarras/DreamPose)|
     |---|---|---|
+<br></br>
 
 ### 10. SDXL: Improving Latent Diffusion Models for High-Resolution Image Synthesis, Podell et. al.
 - Introduces an enhanced stable diffusion model that surpasses the generating capabilities of previous versions
