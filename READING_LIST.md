@@ -1,5 +1,5 @@
 # Suggested reading list
-
+This document contains the suggested reading list of papers pertaining to Diffusion Models
 ## Fundamental papers
 
 1. **Denoising Diffusion Probabilistic Models**
@@ -40,6 +40,7 @@
    - https://arxiv.org/abs/2208.01626
 
 2. Adding Conditional Control to Text-to-Image Diffusion Models
+   - https://arxiv.org/abs/2302.05543
 
 3. **InstructPix2Pix: Learning to Follow Image Editing Instructions**
    - https://arxiv.org/abs/2211.09800
@@ -97,7 +98,7 @@
 >Note: 
 > 1. Bold highlighted papers are must read for solid understanding of diffusion models and its possible applications.
 > 2. Moreover, this is not exhaustive but suggested list. If any one of you find an interesting paper or has any suggestions. They are more than welcome!
-**Happy reading!**
+
 
 
 
