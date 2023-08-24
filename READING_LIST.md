@@ -2,31 +2,37 @@
 This document contains the suggested reading list of papers pertaining to Diffusion Models
 ## Fundamental papers
 
-1. **Denoising Diffusion Probabilistic Models**
+1. **Auto-Encoding Variational Bayes**
+    - https://arxiv.org/pdf/1312.6114
+
+2. **Denoising Diffusion Probabilistic Models**
     - https://arxiv.org/abs/2006.11239
 
-2. **Improved Denoising Diffusion Probabilistic Models**
+3. **Improved Denoising Diffusion Probabilistic Models**
    - https://arxiv.org/abs/2102.09672
 
-3. Generative Modeling by Estimating Gradients of the Data Distribution
+4. Generative Modeling by Estimating Gradients of the Data Distribution
    - https://arxiv.org/abs/1907.05600
 
-4. **Score-Based Generative Modeling through Stochastic Differential Equations**
+5. **Score-Based Generative Modeling through Stochastic Differential Equations**
    - https://arxiv.org/abs/2011.13456
 
-5. **Denoising Diffusion Implicit Models**
+6. **Denoising Diffusion Implicit Models**
    - https://arxiv.org/abs/2010.02502
 
-6. **Diffusion Models Beat GANs on Image Synthesis**
+7. **Diffusion Models Beat GANs on Image Synthesis**
    - https://arxiv.org/abs/2105.05233
 
-7. **Elucidating the Design Space of Diffusion-Based Generative Models**
+8. **Elucidating the Design Space of Diffusion-Based Generative Models**
     - https://arxiv.org/abs/2206.00364
 
-8. **High-Resolution Image Synthesis with Latent Diffusion Models**
+9. **Classifier-Free Diffusion Guidance**
+    - https://arxiv.org/abs/2207.12598
+
+10. **High-Resolution Image Synthesis with Latent Diffusion Models**
    - https://arxiv.org/abs/2112.10752
 
-9. **SDXL: Improving Latent Diffusion Models for High-Resolution Image Synthesis**
+11. **SDXL: Improving Latent Diffusion Models for High-Resolution Image Synthesis**
    - https://www.youtube.com/watch?v=kkYaikeLJd
 
 
