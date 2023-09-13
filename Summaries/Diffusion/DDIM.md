@@ -95,7 +95,7 @@ We can't do the similar inversion to generate the latent code using DDPM due to 
 
 ## Examples
 For the examples, $\sigma$ is defined as:
-$${\sigma}_t = \eta\sqrt{\frac{1-\bar{\alpha}_{t-1}}{1-\bar{\alpha}_{t}}}\sqrt{1 - \frac{\bar{\alpha}_t}{\bar{\alpha}_{t-1}}}$$
+${\sigma}_t = \eta\sqrt{\frac{1-\bar{\alpha}_{t-1}}{1-\bar{\alpha}_{t}}}\sqrt{1 - \frac{\bar{\alpha}_t}{\bar{\alpha}_{t-1}}}$
 Here, $\sigma$ controls the stochasticity, which is controled using $\eta$ (0: DDIM, 1: DDPM)
 
 

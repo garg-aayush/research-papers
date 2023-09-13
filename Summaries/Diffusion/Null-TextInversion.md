@@ -29,7 +29,7 @@ The paper introduces an accurate inversion scheme, achieving near-perfect recons
 
 ### Classifier-free guidance
 Classifier-Free Guidance (CFG) is a lightweight technique to encourage prompt-adherence in text-to-image generation. In diffusion models, in each step, the prediction is performed twice: once unconditionally and once with the text condition. These predictions are then extrapolated to amplify the effect of the text guidance. The CFG prediction is defined as:
-$$ \bar{\epsilon_\theta}(z_t, t, \phi)= w.\epsilon_\theta(z_t, t, C) + (1-w) .\epsilon_\theta(z_t, t, \phi)$$
+$ \bar{\epsilon_\theta}(z_t, t, \phi)= w.\epsilon_\theta(z_t, t, C) + (1-w) .\epsilon_\theta(z_t, t, \phi)$
 
 ### DDIM Inversion
 DDIM inversion is a simple inversion technique that is reverse of DDIM sampling, based on the assumption that the ODE process can be reversed in the limit of small steps. The diffusion process in performed in the reverse direction, that is $z_0 \rightarrow z_T$ insted of $z_T \rightarrow z_0$
@@ -59,14 +59,14 @@ embedding with an optimized one, referred to as null-text optimization
 - In particular, authors aim to perform our optimization around a pivotal noise vector which is a good approximation and thus allows a more efficient inversion.
 - **For this, authors use DDIM inversion with guidance scale w = 1 as a rough approximation of the original image which is highly editable but far from accurate.**
 - The DDIM inversion with $w=1$ is called as pivot trajectory and optimization is performed around it. The optimization aims to maximize the similarity to the original image.
-$$ min||{z}_{t-1}^{*} - z_{t-1} ||_2^2  $$ 
+$ min||{z}_{t-1}^{*} - z_{t-1} ||_2^2  $ 
 - Note, a separate optimization is performed for each timestep $t$ from $t=T \rightarrow t=1$ with the endpoint of the previous step optimization as the starting point for the current $t$.
 
 ### Null-text optimization
 - As mentioned before, authors optimize only the unconditional embedding $\phi$ as part of null-text optimization with the model and the conditional textual embedding as being kept unchanged.
 - Authors observed that optimizing a different ”null embedding” for each timestamp $t$ significantly improves the reconstruction quality and is best suited for pivotal inversion.
 - Therefore, the unconditional text embeddings (${\phi}_{t=1}^T$) at all steps is optimized with starting point as previous timestep result.
-$$ min||{z}_{t-1}^{*} - z_{t-1}(\bar{z_t, \phi_t, C}) ||_2^2  $$ 
+$ min||{z}_{t-1}^{*} - z_{t-1}(\bar{z_t, \phi_t, C}) ||_2^2  $ 
 
 The full algorithm can be summarized as follows:
 ![](images/null-inversion/algorithm.png)

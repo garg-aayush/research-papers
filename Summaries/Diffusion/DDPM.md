@@ -10,24 +10,24 @@
 - $q(x_0)$ : the real data distribution
 - $\bar{x}$ : a data point sampled from a real data distribution
 - $\bar{x}_T$ : the final pure Gaussian noise $\mathcal{N}(\bar{x}_T; 0, \mathbf{I})$ after the forward diffusion proceess
-- $q(\bar{x}_{1:T} | \bar{x}_{0})$ : forward diffion process
+- $q(\bar{x}_{1:T} \vert \bar{x}_{0})$ : forward diffion process
 - $\beta_t$ : the fixed variance schedule in the diffusion process
 
 ## Forward diffusion process
-For a sample $\bar{x}_0$ from the given real distribution, $q(x_0)$, we define a forward diffusion process, $q(\bar{x}_{1:T} | \bar{x}_{0})$, in which we add small amount of Gaussian noise to the $\bar{x}_0$ in $T$ steps, producing a sequence of noisy samples $\bar{x}_1$, $\bar{x}_2$,...,$\bar{x}_T$, according to a pre-defined variance schedule $\{\beta_t \in (0,1) \}_{t=1}^{T}$. The data sample gradually loses its features as the steps approaches $T$ such that $\bar{x}^T$ is equivalent to isotropic Gaussian noise. 
+For a sample $\bar{x}_0$ from the given real distribution, $q(x_0)$, we define a forward diffusion process, $q(\bar{x}_{1:T} \vert \bar{x}_{0})$, in which we add small amount of Gaussian noise to the $\bar{x}_0$ in $T$ steps, producing a sequence of noisy samples $\bar{x}_1$, $\bar{x}_2$,...,$\bar{x}_T$, according to a pre-defined variance schedule $\{\beta_t \in (0,1) \}_{t=1}^{T}$. The data sample gradually loses its features as the steps approaches $T$ such that $\bar{x}^T$ is equivalent to isotropic Gaussian noise. 
 
 ![forward process](images/ddpm/forwardprocess.png)
 
 As the forward process is a Markov chain, therefore:
 
-$$q(\bar{x}_{1:T} | \bar{x}_{0}) = \prod_{t=1}^{T}q(\bar{x}_{t} | \bar{x}_{t-1})$$
+$$q(\bar{x}_{1:T} \vert \bar{x}_{0}) = \prod_{t=1}^{T}q(\bar{x}_{t} \vert \bar{x}_{t-1})$$
 
 Since, the distributons are Gaussians:
-$$q(\bar{x}_{t} | \bar{x}_{t-1}) = \mathcal{N}(\bar{x}_t; \sqrt{1-\beta_t}\bar{x}_{t-1}, \beta_t\mathbf{I})$$
+$$q(\bar{x}_{t} \vert \bar{x}_{t-1}) = \mathcal{N}(\bar{x}_t; \sqrt{1-\beta_t}\bar{x}_{t-1}, \beta_t\mathbf{I})$$
 
 The $\bar{x}_t$ can also be sampled using $\bar{x}_0$ as follows:
 
-$$q(\bar{x}_{t} | \bar{x}_{0}) = \mathcal{N}(\bar{x}_0; \sqrt{\bar{\alpha}_t}\bar{x}_{0}, (1-\bar{\alpha}_t)\mathbf{I})$$
+$$q(\bar{x}_{t} \vert \bar{x}_{0}) = \mathcal{N}(\bar{x}_0; \sqrt{\bar{\alpha}_t}\bar{x}_{0}, (1-\bar{\alpha}_t)\mathbf{I})$$
 
 Here, $\alpha_t=1-\beta_t$ and $\bar{\alpha}_t = \prod_{i=1}^{t} \alpha_i$.
 
@@ -35,13 +35,13 @@ The following shows how to derive the forward diffusion process.
 ![forward diffusion process](images/ddpm/derivation1.jpg)
 
 ## Reverse diffusion process
-If we know the $p(\bar{x}_{t-1} | \bar{x}_{t})$ conditional process, then we can reverse the forward process starting from pure noise and gradually "denoising" it so that we end up with a sample from the real distribution.
+If we know the $p(\bar{x}_{t-1} \vert \bar{x}_{t})$ conditional process, then we can reverse the forward process starting from pure noise and gradually "denoising" it so that we end up with a sample from the real distribution.
 
-However, it is intractable and requires knowing the actual data distribution of the images in order to calculate this conditional probability. Hence, we use a neural network $p_\theta$ to approximate (learn) the $p_{\theta}(\bar{x}_{t-1} | \bar{x}_{t})$ conditional probability distribution.
+However, it is intractable and requires knowing the actual data distribution of the images in order to calculate this conditional probability. Hence, we use a neural network $p_\theta$ to approximate (learn) the $p_{\theta}(\bar{x}_{t-1} \vert \bar{x}_{t})$ conditional probability distribution.
 
 Starting with the pure Gaussian noise $p(\bar{x}_T) = \mathcal{N}(\bar{x}_T; 0, \mathbf{I})$, assuming the reverse process to be Gaussian and Markov, the joint conditional ditribution $p_{\theta}(\bar{x}_{0:T})$ is given as follows:
 
-$$ p_{\theta}(\bar{x}_{0:T}) = p(\bar{x}_T) \prod_{t=1}^{T}p_\theta(\bar{x}_{t-1} | \bar{x}_{t}) $$
+$$ p_{\theta}(\bar{x}_{0:T}) = p(\bar{x}_T) \prod_{t=1}^{T}p_\theta(\bar{x}_{t-1} \vert \bar{x}_{t}) $$
 
 $$ p_{\theta}(\bar{x}_{0:T}) = p(\bar{x}_T) \prod_{t=1}^{T} \mathcal{N}(\bar{x}_{t-1}; \mu_{\theta}(\bar{x}_t,t), \Sigma_{\theta}(\bar{x}_t,t))$$
 

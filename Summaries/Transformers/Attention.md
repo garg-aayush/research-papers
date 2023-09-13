@@ -45,7 +45,7 @@
 \text{{head}}_i = \text{{Attention}}(QW_i^Q, KW_i^K, VW_i^V)
 \]
 
-![](images/transformers/1_attention_mechanism.png)
+![](images/attention/1_attention_mechanism.png)
 
 
 - The block `Mask (opt.)` represents the optional masking of specific entries in the attention matrix. This is for instance used if we stack multiple sequences with different lengths into a batch. This helps in the parallelization in PyTorch. The masking is also used in the self-attention mechanism of the decoder part of the Transformers to allow the information flow only from previous tokens and restrict any learning from future tokens
@@ -65,7 +65,7 @@
 
 - The `Transformer model` introduced in the paper contains  consists of an encoder and a decoder. 
 
-![](images/transformers/1_transformer_model.png)
+![](images/attention/1_transformer_model.png)
 
 - The encoder processes the input sequence, while the decoder generates the output sequence. 
 
@@ -92,4 +92,3 @@
 ## Acknowledgments
 - Transformers United 2023: Introduction to Transformers w/ Andrej Karpathy: https://www.youtube.com/watch?v=XfpMkf4rD6E
 - Original paper: https://arxiv.org/abs/1706.03762
-- ChatGPT
