@@ -40,8 +40,9 @@ The Dreampose takes an input image $x_o$ and poses ${p_1,p_2...p_N}$
 details in the conditioning image. 
 - So, instead VAE encoder latent embeddings are added along with CLIP image embeddings as image conditioning
 - These embeddings are combined and added using an Adapter Module. This adapter blends both the signals together and transforms the output into the typical shape expected by the cross-attention modules of the denoising U-Net. 
-  $$ c_I = A(c_{CLIP}, c_{VAE})$$
+  $c_I = A(c_{CLIP}, c_{VAE})$
 - The weights corresponding to the VAE embeddings are set to zero, so as to mitigate network “shock” in training.
+
 ![img](./images/dreampose/method_1.png)
 
 ### Pose-conditioning using a modified UNet
