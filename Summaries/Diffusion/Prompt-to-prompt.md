@@ -42,7 +42,7 @@
 
 - **"Pixels are more attracted to the words that describe them"**
 
-- Since the attention reflects the overall composition, one can inject the attention maps $\mathcal{M}$ that were obtained from the generation with the original prompt $\mathcal{P}$, into a second generation with the modified prompt $\mathcal{P^*}$. This allows the synthesis of an edited image $\mathcal{I^*}$ that is not only manipulated according to the edited prompt, but also preserves the structure of the input image $\mathcal{I}$. 
+- Since the attention reflects the overall composition, one can inject the attention maps $\mathcal{M}$ that were obtained from the generation with the original prompt $\mathcal{P}$, into a second generation with the modified prompt $\mathcal{P^\*}$. This allows the synthesis of an edited image $\mathcal{{I}^\*}$ that is not only manipulated according to the edited prompt, but also preserves the structure of the input image $\mathcal{I}$. 
 
 
 - A generic algorithm is given as follows:
