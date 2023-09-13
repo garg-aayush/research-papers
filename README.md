@@ -20,10 +20,7 @@ This repository houses my personal summaries and notes on a variety of academic 
     |---|---|---|
 
 
-### 3. High-Resolution Image Synthesis with Latent Diffusion Models, Rombach et. al.
-
-
-### 4. Prompt-to-Prompt Image Editing with Cross Attention Control, Hertz et. al.
+### 3. Prompt-to-Prompt Image Editing with Cross Attention Control, Hertz et. al.
 - Introduces a textual editing method to semantically edit images in pre-trained text-conditioned diffusion models via Prompt-to-Prompt manipulations
 - Approach allows for editing the image while preserving the original composition of the image and addressing the content of the new prompt.  
 - The key idea is that onr can edit images by injecting the cross-attention maps during the diffusion process, controlling which pixels attend to which tokens of the prompt text during which diffusion steps. 
@@ -31,7 +28,7 @@ This repository houses my personal summaries and notes on a variety of academic 
     |---|---|---|
 
 
-### 5. Null-text Inversion for Editing Real Images using Guided Diffusion Models, Mokady et. al.
+### 4. Null-text Inversion for Editing Real Images using Guided Diffusion Models, Mokady et. al.
 - Introduces an accurate inversion scheme for **real input images**,  enabling intuitive and versatile text-based image modification without tuning model weights.
 - It achieving near-perfect reconstruction, while retaining the rich text-guided editing capabilities of the original model
 - The approach consists of two novel ideas, pivotal inversion (using DDIM inversion trajactory as the anchor noise vector) and null-text optimization (optimizing only the null-text embeddings)
@@ -40,7 +37,7 @@ This repository houses my personal summaries and notes on a variety of academic 
     | [**`Paper walkthrough video: Original author`**](https://www.youtube.com/watch?v=qzTlzrMWU2M&t=52s) | [**`Github repo`**](https://github.com/google/prompt-to-prompt/#null-text-inversion-for-editing-real-images)  |
 
 
-### 6. Adding Conditional Control to Text-to-Image Diffusion Models, Lvmin Zhang and Maneesh Agarwala et. al.
+### 5. Adding Conditional Control to Text-to-Image Diffusion Models, Lvmin Zhang and Maneesh Agarwala et. al.
 - Allows additional control for the pre-trained large diffusion models, such as Stable diffusion, by providing the facility of input visual conditions such as edge maps, segment masks, depth masks, etc.
 - Learns task-specific conditions in an end-to-end way
 - Training is as fast as fine-tuning a diffusion model, and for small dataset (<50k), it can be trained to produce robust results even on desktop-grade personal GPUs.
@@ -51,7 +48,7 @@ This repository houses my personal summaries and notes on a variety of academic 
 
 
 
-### 7. DreamPose: Fashion Image-to-Video Synthesis via Stable Diffusion, Karras et. al.
+### 6. DreamPose: Fashion Image-to-Video Synthesis via Stable Diffusion, Karras et. al.
 -  An image-and-pose conditioned diffusion method based upon Stable Diffusion to turn fashion photographs into realistic, animated videos
 -  Introduces a pose conditioning approach that greatly improves temporal consistency across frames
 -  Uses an image CLIP and VAE encoder, instead of text encoder, that increases the output fidelity to the conditioning image
@@ -59,7 +56,7 @@ This repository houses my personal summaries and notes on a variety of academic 
     |---|---|---|
 
 
-### 8. SDXL: Improving Latent Diffusion Models for High-Resolution Image Synthesis, Podell et. al.
+### 7. SDXL: Improving Latent Diffusion Models for High-Resolution Image Synthesis, Podell et. al.
 - Introduces an enhanced stable diffusion model that surpasses the generating capabilities of previous versions
 - Uses a larger UNet backbone and introducing novel conditioning schemes in the training stage
 - Probably, the best public domain open-source text-to-image model at this moment (Aug, 2023)
