@@ -36,21 +36,25 @@ This can further be reduces as:
 ![ddpm](images/ddim/ddpm_2.png)
 
 Thus, $\bar{x_t}$ can be represented as:
+
 ![ddpm](images/ddim/ddpm_4.png)
 
 ### Reverse diffusion process (generative process)
+
 ![ddpm](images/ddim/ddpm_5.png)
 
 Here, $\theta$ are learnt parameters to fit $q(x_0)$ by maximizing the variational lower bound: 
+
 ![ddpm](images/ddim/ddpm_6.png)
 
 Making the different assumptions and assuming trainable fixed means and variances for all the conditional Gaussians:
+
 ![ddpm](images/ddim/ddpm_7.png)
 
 ## Non-Markovian process
 
 ## Non-Markovian forward process
-The DDPM objective in the form of Lγ only depends on the marginals $q(\bar{x}_t|\bar{x}_0)$, but not directly on the joint $q(\bar{x}_{1:T}|\bar{x}_0)$. Since there are many inference distributions (joints) with the same marginals, the inference processes can be expressed as an non-Markovian, which leads to new generative processes. 
+The DDPM objective in the form of Lγ only depends on the marginals $q(\bar x_t|\bar x_0)$, but not directly on the joint $q(\bar{x}_{1:T}|\bar{x}_0)$. Since there are many inference distributions (joints) with the same marginals, the inference processes can be expressed as an non-Markovian, which leads to new generative processes. 
 
 ![non](images/ddim/non_markovian_1.png)
 ![non](images/ddim/non_markovian_2.png)
@@ -63,7 +67,7 @@ The DDPM objective in the form of Lγ only depends on the marginals $q(\bar{x}_t
 ![non](images/ddim/non_markovian_4.png)
 
 
-> **Note, they show ${J}_{\sigma}$ is equivalent to $L_{\gamma}$ for certain weights $\gamma$. Thus, non-Markovian inference process
+> **Note, they show $J_{\sigma}$ is equivalent to $L_{\gamma}$ for certain weights $\gamma$. Thus, non-Markovian inference process
 lead to the same surrogate objective function as DDPM.**
 
 > "With L1 as the objective, we are not only learning a generative process for the Markovian inference process considered in Sohl-Dickstein et al. (2015) and Ho et al. (2020), but also generative processes for many non-Markovian forward processes parametrized by σthat we have described. Therefore, we can essentially use pretrained DDPM models as the solutions to the new objectives, and focus on finding a generative process that is better at producing samples subject to our needs by changing $\sigma$"
@@ -76,7 +80,7 @@ Fo $\sigma = 0$ for all $t$; the forward process becomes deterministic given $x_
 
 ![ddim](images/ddim/ddim_2.png)
 
-Note, when ${\sigma}_t = \sqrt{\frac{1-\bar{\alpha}_{t-1}}{1-\bar{\alpha}_{t}}}\sqrt{1 - \frac{\bar{\alpha}_t}{\bar{\alpha}_{t-1}}}$
+Note, when $\sigma_t = \sqrt{\frac{1-\bar\alpha_{t-1}}{1-\bar\alpha_{t}}}\sqrt{1 - \frac{\bar\alpha_t}{\bar{\alpha}_{t-1}}}$
 the forward process becomes Markovian, and the generative process becomes a DDPM.
 
 ![ddim](images/ddim/ddim_3.png)
@@ -95,7 +99,7 @@ We can't do the similar inversion to generate the latent code using DDPM due to 
 
 ## Examples
 For the examples, $\sigma$ is defined as:
-${\sigma}_t = \eta\sqrt{\frac{1-\bar{\alpha}_{t-1}}{1-\bar{\alpha}_{t}}}\sqrt{1 - \frac{\bar{\alpha}_t}{\bar{\alpha}_{t-1}}}$
+$\sigma_t = \eta\sqrt{\frac{1-\bar\alpha_{t-1}}{1-\bar\alpha_{t}}}\sqrt{1 - \frac{\bar\alpha_{t}}{\bar{\alpha}_{t-1}}}$
 Here, $\sigma$ controls the stochasticity, which is controled using $\eta$ (0: DDIM, 1: DDPM)
 
 
