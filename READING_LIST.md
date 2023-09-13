@@ -11,7 +11,7 @@ This document contains the suggested reading list of papers pertaining to Diffus
 3. **Improved Denoising Diffusion Probabilistic Models**
    - https://arxiv.org/abs/2102.09672
 
-4. Generative Modeling by Estimating Gradients of the Data Distribution
+4. **Generative Modeling by Estimating Gradients of the Data Distribution**
    - https://arxiv.org/abs/1907.05600
 
 5. **Score-Based Generative Modeling through Stochastic Differential Equations**
@@ -30,10 +30,10 @@ This document contains the suggested reading list of papers pertaining to Diffus
     - https://arxiv.org/abs/2207.12598
 
 10. **High-Resolution Image Synthesis with Latent Diffusion Models**
-   - https://arxiv.org/abs/2112.10752
+    - https://arxiv.org/abs/2112.10752
 
 11. **SDXL: Improving Latent Diffusion Models for High-Resolution Image Synthesis**
-   - https://www.youtube.com/watch?v=kkYaikeLJd
+    - https://www.youtube.com/watch?v=kkYaikeLJd
 
 
 ## Inversion
@@ -52,7 +52,7 @@ This document contains the suggested reading list of papers pertaining to Diffus
    - https://arxiv.org/abs/2211.09800
 
 
-## SD finetuning
+## SD finetuning and controlled generation
 1. **An Image is Worth One Word: Personalizing Text-to-Image Generation using Textual Inversion**
     - https://arxiv.org/abs/2208.01618
 
@@ -65,11 +65,15 @@ This document contains the suggested reading list of papers pertaining to Diffus
 4. Key-Locked Rank One Editing for Text-to-Image Personalization
     - https://arxiv.org/abs/2305.01644
 
+5. **T2I-Adapter: Learning Adapters to Dig out More Controllable Ability for Text-to-Image Diffusion Models**
+    - https://arxiv.org/abs/2302.08453
+
+
 ## Image-based editing
 1. **SDEdit: Guided Image Synthesis and Editing with Stochastic Differential Equations**
     - https://arxiv.org/abs/2108.01073
 
-2. Palette: Image-to-Image Diffusion Models
+2. **Palette: Image-to-Image Diffusion Models**
    - https://arxiv.org/abs/2111.05826
 
 
@@ -83,7 +87,7 @@ This document contains the suggested reading list of papers pertaining to Diffus
     - https://arxiv.org/abs/2104.07636
 
 
-## Garment Try-on
+## Garments Try-on
 1. **TryOnDiffusion: A Tale of Two UNets**
     - https://arxiv.org/abs/2306.08276
 
@@ -94,11 +98,21 @@ This document contains the suggested reading list of papers pertaining to Diffus
 
 
 ## Fast sampling
-1.  Progressive Distillation for Fast Sampling of Diffusion Models
+1.  **Progressive Distillation for Fast Sampling of Diffusion Models**
     - https://arxiv.org/abs/2202.00512
 
 2.  On Distillation of Guided Diffusion Models
     - https://arxiv.org/abs/2210.03142
+
+## Video Synthesis
+1. **Video Diffusion Models**
+    - https://arxiv.org/abs/2204.03458
+2. **DreamPose: Fashion Image-to-Video Synthesis via Stable Diffusion**
+    - https://arxiv.org/abs/2304.06025
+3. **DisCo: Disentangled Control for Referring Human Dance Generation in Real World**
+    - https://arxiv.org/abs/2307.00040
+4. **Tune-A-Video: One-Shot Tuning of Image Diffusion Models for Text-to-Video Generation**
+    - https://arxiv.org/abs/2212.11565
 
 
 >Note: 
