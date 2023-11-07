@@ -48,18 +48,18 @@ $$f^d_k(h) = h \otimes \Phi_d(k), \quad (h \otimes \Phi_d(k))(o) = \sum_{s+d\cdo
 - Moreover, to address the limitation of traditional dilated convolution, which cannot handle fractional multiples of the perception field (e.g., 1.5×), the authors propose a fractional dilated convolution.
 - This method involves rounding up the target scale to an integer and stretching the input feature map accordingly, using an interpolation function like bilinear interpolation.
 
-  $$ f^d_k(h) = \text{interp}_{1/s} (\text{interp}_s(h) \otimes \Phi_{d}(k)), \quad s = \lceil d \rceil / d, $$
+$$ f^d_{k(h)} = \text{interp}\_{1/s} (\text{interp}\_{s}(h) \otimes \Phi_{d}(k)), \quad s = \lceil d \rceil / d$$
 
-> - $ f^d_k(h) $: The output feature map after applying dilated convolution.
-> - $ h $: The input feature map.
-> - $ k $: The convolution kernel.
-> - $ \Phi_d(\cdot) $: The dilation operation with dilation factor $ d $.
-> - $ \otimes $: The convolution operation.
-> - $ o $: A specific location in the output feature map.
-> - $ p, q $: Spatial locations used to index the feature map and kernel, respectively.
-> - $ s $: The scale used for resizing the feature map in the re-dilation process.
-> - $ interp_{\cdot}(\cdot) $: A resizing interpolation function (e.g., bilinear interpolation).
-> - $ \lceil \cdot \rceil $: The ceiling function which rounds up to the nearest integer.
+> - $f^d_k(h)$: The output feature map after applying dilated convolution.
+> - $h$: The input feature map.
+> - $k$: The convolution kernel.
+> - $\Phi_d(\cdot)$: The dilation operation with dilation factor $d $.
+> - $\otimes$: The convolution operation.
+> - $o$: A specific location in the output feature map.
+> - $p, q$: Spatial locations used to index the feature map and kernel, respectively.
+> - $s$: The scale used for resizing the feature map in the re-dilation process.
+> - $interp_{\cdot}(\cdot)$: A resizing interpolation function (e.g., bilinear interpolation).
+> - $\lceil \cdot \rceil$: The ceiling function which rounds up to the nearest integer.
 
 
 - The re-dilation factor is made layer-and-timestep-aware, meaning it can vary depending on the specific layer and timestep in the diffusion model's process.
@@ -75,17 +75,17 @@ $$f^d_k(h) = h \otimes \Phi_d(k), \quad (h \otimes \Phi_d(k))(o) = \sum_{s+d\cdo
 - This dispersion method involves using a linear transform to expand the size of the kernel, aiming to maintain the layer's original capabilities while enlarging its receptive field.
 - Structure-level calibration is used to ensure that the performance of the pre-trained convolution layer is preserved when the size of the input feature map is changed. This calibration requires that the output of the convoluted interpolated feature map remains the same as if the original output was interpolated.
 
-$$ \text{interpd}(f_k(\mathbf{h})) = f_{k'}(\text{interpd}(\mathbf{h})), \quad k' = Rk  $$
+$$\text{interpd}(f_k(\mathbf{h})) = f_{k'}(\text{interpd}(\mathbf{h})), \quad k' = Rk $$
 
 - Since the equation for structure-level calibration is underdetermined (the enlarged kernel has more elements than the original), pixel-level calibration is introduced to make the new, larger convolution kernel behave similarly on the original feature map.
 
 $$\underset{R}{\text{min}} \left\| \text{interpd}(f_k(\mathbf{h})) - f_{k'}(\text{interpd}(\mathbf{h})) \right\|^2_2 + \eta \cdot \left\| f_k(\mathbf{h}) - f_{k'}(\mathbf{h}) \right\|^2_2 $$
 
-> - $ k $: The original convolution kernel.
-> - $ k' $: The dispersed convolution kernel after applying the transformation.
-> - $ R $: The linear transform applied to obtain the dispersed kernel from the original kernel.
-> - $ \eta $: A weight controlling the balance in the least square problem between the structure-level and pixel-level calibration.
-> - $ \|\cdot\|_2 $: The L2 norm, which in this context measures the difference between the original and calibrated convolution outputs.
+> - $k$: The original convolution kernel.
+> - $k'$: The dispersed convolution kernel after applying the transformation.
+> - $R$: The linear transform applied to obtain the dispersed kernel from the original kernel.
+> - $\eta$: A weight controlling the balance in the least square problem between the structure-level and pixel-level calibration.
+> - $\|\cdot\|_2$: The L2 norm, which in this context measures the difference between the original and calibrated convolution outputs.
 
 - Authors formulate a linear least squares problem to find the optimal transformation that minimizes the difference between the outputs of the original and dispersed kernels, both on the original and interpolated feature maps.
 
@@ -105,11 +105,9 @@ $$\underset{R}{\text{min}} \left\| \text{interpd}(f_k(\mathbf{h})) - f_{k'}(\tex
 
 - The sampling process merges the predictions from both models using a guidance scale $w$, formulated as:
 
-$$
-\epsilon_{\theta}(x_t) + w \cdot (\tilde{\epsilon}_{\theta}(x_t, y) - \tilde{\epsilon}_{\theta}(x_t)),
-$$
+$$\epsilon\_{\theta}(x_t) + w \cdot (\tilde{\epsilon}\_{\theta}(x_t, y) - \tilde{\epsilon}\_{\theta}(x_t)),$$
 
-where $x_t$ represents the input at timestep $t$, and $y$ is the input text prompt. The base prediction $\epsilon_{\theta}(x_t)$ ensures effective denoising during sampling. The guidance term $(\tilde{\epsilon}_{\theta}(x_t,y) - \tilde{\epsilon}_{\theta}(x_t))$ contains two similar poor noise predictions that, when subtracted, cancel out the erroneous noise, leaving information that contributes to generating correct object structures.
+where $x_t$ represents the input at timestep $t$, and $y$is the input text prompt. The base prediction $\epsilon_{\theta}(x_t)$ ensures effective denoising during sampling. The guidance term $(\tilde{\epsilon}\_{\theta}(x\_t,y) - \tilde{\epsilon}_{\theta}(x_t))$ contains two similar poor noise predictions that, when subtracted, cancel out the erroneous noise, leaving information that contributes to generating correct object structures.
 
 - Experiments demonstrate that this method effectively mitigates incorrect noise predictions and supports the generation of accurate object structures in high-resolution image synthesis.
 
