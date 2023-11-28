@@ -67,10 +67,16 @@ This repository houses my personal summaries and notes on a variety of academic 
 ### 8. ScaleCrafter: Tuning-free Higher-Resolution Visual Generation with Diffusion Models, He et. al.
 - Directly sampling an image with a resolution beyond the training image sizes of pre-trained diffusion models models usually result in severe object repetition issues and unreasonable object structures.
 - The paper explores the use of pre-trained diffusion models to generate images at resolutions higher than the models were trained on, specifically targeting the generation of images with arbitrary aspect ratios and higher resolution.
-- Probably, the best public domain open-source text-to-image model at this moment (Aug, 2023)
-    | [**`Summary notes`**](Summaries/Diffusion/ScaleCrafter.md) |  [`Archive link`](https://arxiv.org/abs/2310.07702) | 
+- | [**`Summary notes`**](Summaries/Diffusion/ScaleCrafter.md) |  [`Archive link`](https://arxiv.org/abs/2310.07702) | 
     |---|---|
     | [**`Project page`**](https://yingqinghe.github.io/scalecrafter/) | [**`Github repo`**](https://github.com/YingqingHe/ScaleCrafter)  |
+
+### 9. Concept Sliders: LoRA Adaptors for Precise Control in Diffusion Models, Gandikota et. al.
+- It allows for precise control of concepts in the diffusion models.
+- | [**`Summary notes`**](TODO) |  [`Archive link`](https://arxiv.org/pdf/2311.12092) | [**`Project page`**](https://sliders.baulab.info/) |
+    |---|---|---|
+    | [**`Github repo`**](https://github.com/rohitgandikota/sliders)  | [**`XL sliders (LORA)`**](https://sliders.baulab.info/weights/xl_sliders/)  |
+
 
 ## Transformers Papers
 ### 1. Attention Is All You Need, Vaswani et. al.
