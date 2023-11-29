@@ -73,10 +73,15 @@ This repository houses my personal summaries and notes on a variety of academic 
 
 ### 9. Concept Sliders: LoRA Adaptors for Precise Control in Diffusion Models, Gandikota et. al.
 - It allows for precise control of concepts in the diffusion models.
-- | [**`Summary notes`**](TODO) |  [`Archive link`](https://arxiv.org/pdf/2311.12092) | [**`Project page`**](https://sliders.baulab.info/) |
+- | [**`Summary notes`**](Summaries/Diffusion/LoraSliders.md) |  [`Archive link`](https://arxiv.org/pdf/2311.12092) | [**`Project page`**](https://sliders.baulab.info/) |
     |---|---|---|
     | [**`Github repo`**](https://github.com/rohitgandikota/sliders)  | [**`XL sliders (LORA)`**](https://sliders.baulab.info/weights/xl_sliders/)  |
 
+### 10. ZipLoRA: Any Subject in Any Style by Effectively Merging LoRAs, Shah et. al.
+- ZipLoRA, seamlessly allows for merging independently trained style and subject LoRAs thus generates any subject in any style using sufficiently powerful diffusion models like SDXL. 
+- It offers a streamlined, cheap, and hyperparameter-free solution for simultaneous subject and style personalization, unlocking a new level of creative controllability for diffusion models.
+- | [**`Summary notes`**](Summaries/Diffusion/ZipLora.md) |  [`Archive link`](https://arxiv.org/abs/2311.13600) | [**`Project page`**](https://ziplora.github.io//) |
+    |---|---|---|
 
 ## Transformers Papers
 ### 1. Attention Is All You Need, Vaswani et. al.
