@@ -1,7 +1,6 @@
 # Research papers
 This repository houses my personal summaries and notes on a variety of academic papers/blogs I have read. These summaries are intended to provide a brief overview of the papers' main points, methodologies, findings, and implications, thereby serving as quick references for myself and anyone interested.
 
-
 ## Diffusion Papers
 ### 1. Denoising Diffusion Probabilistic Models, Ho et. al.
 - Introduces a generative modeling using a continuous-time diffusion process, offering an alternative to adversarial and maximum likelihood methods
@@ -83,6 +82,13 @@ This repository houses my personal summaries and notes on a variety of academic 
 - | [**`Summary notes`**](Summaries/Diffusion/ZipLora.md) |  [`Archive link`](https://arxiv.org/abs/2311.13600) | [**`Project page`**](https://ziplora.github.io//) |
     |---|---|---|
 
+### 11. DemoFusion: Democratising High-Resolution Image Generation With No $$$, Du et. al.
+- DemoFusion focuses on producing high-resolution images to generate images at `4X`, `16X`, and even higher resolutions without any fine-tuning or prohibitive memory demands.
+- | [**`Summary notes`**](Summaries/Diffusion/DemoFusion.md) |  [`Archive link`](https://arxiv.org/pdf/2311.16973.pdf) |
+    |---|---|
+    | [**`Project page`**](https://ruoyidu.github.io/demofusion/demofusion.html) | [**`Github repo`**](https://github.com/PRIS-CV/DemoFusion)  |
+     
+
 ## Transformers Papers
 ### 1. Attention Is All You Need, Vaswani et. al.
 - Introduces the `Transformer` model, which relies solely on attention mechanisms for sequence modelling and transduction tasks. It dispenses the recurrence and convolutions networks entirely.
@@ -90,7 +96,8 @@ This repository houses my personal summaries and notes on a variety of academic 
   | [**`Summary notes`**](Summaries/Transformers/Attention.md) |  [`Archive link`](https://arxiv.org/abs/1706.03762) |
     |---|---|
     | [**`Paper explanation video: Yanic Kilcher`**](https://www.youtube.com/watch?v=iDulhoQ2pro&t=3s) | [**`Annotated Implementation`**](http://nlp.seas.harvard.edu/annotated-transformer/) |
-    
+
+
 ## GANs Papers
 ### 1. Barbershop: GAN-based Image Compositing using Segmentation Masks
 - Proposes a novel solution to image blending, particularly for the problem of hairstyle transfer, based on GAN-inversion
@@ -98,3 +105,6 @@ This repository houses my personal summaries and notes on a variety of academic 
 - explains a new GAN-embedding algorithm which is able to slightly modify images to conform to a common segmentation mask
     | [**`Summary notes`**](Summaries/GANs/Barbershop.md) |  [`Archive link`](https://arxiv.org/abs/2106.01505) | [`Github repo`](https://github.com/ZPdesu/Barbershop)
     |---|---|---|
+
+
+[![Page Views Count](https://badges.toozhao.com/badges/01HHC4PC3EFTT1AEF3E0Q655DP/green.svg)](https://badges.toozhao.com/stats/01HHC4PC3EFTT1AEF3E0Q655DP "Get your own page views count badge on badges.toozhao.com")
