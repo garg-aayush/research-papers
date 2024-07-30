@@ -132,3 +132,4 @@ dmypy.json
 backup/
 papers/
 *.DS_Store
+*html*
